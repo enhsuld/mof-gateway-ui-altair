@@ -38,8 +38,6 @@ angular
             mainService.withdomain('get','/api/mjson')
 				.then(function(data){
 					$scope.sections =  data.mjson;
-					console.log($scope.sections);
-					
 			});
             
             // language switcher
