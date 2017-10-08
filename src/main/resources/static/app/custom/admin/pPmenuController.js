@@ -4,7 +4,7 @@ angular
 	        function ($rootScope,$scope,p_menu,mainService,$state,sweet,$cookies) {
 	    	//	var aj=[{"text":"ROOT","value":"null"}];
                 var forumType=[{"text":"inline","value":1},{"text":"pop-up","value":2},{"text":"batch","value":3},{"text":"custom","value":4}];
-                $scope.domain="com.macro.dev.models.LutMenu.";
+                $scope.domain="com.macro.dev.models.TcPgm.";
 	        	$scope.selectize_uptype_options=forumType;
     			var $formValidate = $('#form_val');
                 var aj=p_menu;
@@ -20,7 +20,6 @@ angular
 	                   $scope.$apply();
 	                }
 	            });
-    			
 	    		var modalUpdate = UIkit.modal("#modal_update");
 	    	      $scope.isupdate = 0;
 	    	      $scope.org = function(){
@@ -110,13 +109,13 @@ angular
 	     	                    }
 	     	                }
 	     	            };
-	      
+
 			$scope.pmenuGrid = {
 				dataSource: {
 
 					transport: {
 						read:  {
-							url: "/api/core/list/LutMenu?access_token="+$cookies.get('access_token'),
+							url: "/api/core/list/tc_pgm?access_token="+$cookies.get('access_token'),
 							data: {"sort":[{field: 'id', dir: 'asc'}]},
 							type: 'GET',
 							dataType: "json"
@@ -126,7 +125,7 @@ angular
                             dataType: "json",
 							type:"POST",
 							complete: function(e) {
-								$(".k-grid").data("kendoGrid").dataSource.read();
+								//$(".k-grid").data("kendoGrid").dataSource.read();
 							}
 						},
 						destroy: {
@@ -154,12 +153,12 @@ angular
 							 id: "id",
 							 fields: {
 								 id: { editable: false,nullable: true},
-								 menuname: { type: "string", validation: { required: true } },
-								 stateurl: { type: "string", defaultValue:'#'},
-								 uicon: { type: "string"},
-								 parentid: { type: "number"},
+                                 menu_name_mn: { type: "string", validation: { required: true } },
+                                 state_url: { type: "string", defaultValue:'#'},
+                                 ui_icon: { type: "string"},
+                                 parent_id: { type: "number"},
                                  uptype: { type: "number"},
-								 orderid: { type: "number" }
+                                 order_id: { type: "number" }
 							 }
 						 }
 					 },
@@ -207,11 +206,11 @@ angular
 				},
 				columns: [
 				  	{title: "#",template: "<span class='row-number'></span>", width:60},
-				  	{ field:"menuname", title: "Нэр /Mn/", width: 200 },
-				  	{ field: "stateurl", title:"URL", width: 200 },
-				  	{ field: "uicon", title:"IKON", width: 150},
-				  	{ field: "parentid", values: aj, title:"Эцэг цэс", width: 200},
-				  	{ field: "orderid", title:"Дараалал", width: 200 },
+				  	{ field:"menu_name_mn", title: "Нэр /Mn/", width: 200 },
+				  	{ field: "state_url", title:"URL", width: 200 },
+				 	{ field: "ui_icon", title:"IKON", width: 150},
+					{ field: "parent_id", values: aj, title:"Эцэг цэс", width: 200},
+				  	{ field: "order_id", title:"Дараалал", width: 200 },
 					{ field: "uptype", title:"форумын төрөл", width: 200,values:forumType }
 				],
 				dataBound: function () {
