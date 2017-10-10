@@ -129,8 +129,8 @@ angular
 							}
 						},
 						destroy: {
-							url: "/api/core/delete/"+$scope.domain+"",
-							contentType:"application/json; charset=UTF-8",
+							url: "/api/core/delete/"+$scope.domain+"?access_token="+$cookies.get('access_token'),
+                            dataType: "json",
 							type:"POST"
 						},
 						create: {
@@ -142,7 +142,9 @@ angular
 							}
 						},
                         parameterMap: function(options) {
-                            options.data=JSON.stringify( options)
+                            options.data=JSON.stringify( options);
+                            options.table="tc_pgm";
+                            options.key="pgm_id";
                             return options;
                         }
 					},
@@ -150,19 +152,19 @@ angular
 						data:"data",
 						total:"total",
 						 model: {
-							 id: "id",
+							 id: "pgm_id",
 							 fields: {
-								 id: { editable: false,nullable: true},
+                                 pgm_id: { editable: false,nullable: true},
                                  menu_name_mn: { type: "string", validation: { required: true } },
                                  state_url: { type: "string", defaultValue:'#'},
                                  ui_icon: { type: "string"},
                                  parent_id: { type: "number"},
-                                 uptype: { type: "number"},
+                                 update_type: { type: "number", defaultValue:1},
                                  order_id: { type: "number" }
 							 }
 						 }
 					 },
-					pageSize: 8,
+					pageSize: 5,
 					serverFiltering: true,
 					serverPaging: true,
 					serverSorting: true
@@ -211,7 +213,7 @@ angular
 				 	{ field: "ui_icon", title:"IKON", width: 150},
 					{ field: "parent_id", values: aj, title:"Эцэг цэс", width: 200},
 				  	{ field: "order_id", title:"Дараалал", width: 200 },
-					{ field: "uptype", title:"форумын төрөл", width: 200,values:forumType }
+					{ field: "update_type", title:"форумын төрөл", width: 200,values:forumType }
 				],
 				dataBound: function () {
 				var rows = this.items();
