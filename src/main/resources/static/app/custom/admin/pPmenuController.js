@@ -4,7 +4,7 @@ angular
 	        function ($rootScope,$scope,p_menu,mainService,$state,sweet,$cookies) {
 	    	//	var aj=[{"text":"ROOT","value":"null"}];
                 var forumType=[{"text":"inline","value":1},{"text":"pop-up","value":2},{"text":"batch","value":3},{"text":"custom","value":4}];
-                $scope.domain="com.macro.dev.models.TcPgm.";
+                $scope.domain="com.macro.dev.models.TcPgm";
 	        	$scope.selectize_uptype_options=forumType;
     			var $formValidate = $('#form_val');
                 var aj=p_menu;
@@ -116,7 +116,7 @@ angular
 					transport: {
 						read:  {
 							url: "/api/core/list/tc_pgm?access_token="+$cookies.get('access_token'),
-							data: {"sort":[{field: 'id', dir: 'asc'}]},
+							data: {"sort":[{field: 'pgm_id', dir: 'asc'}]},
 							type: 'GET',
 							dataType: "json"
 						},
@@ -145,6 +145,7 @@ angular
                             options.data=JSON.stringify( options);
                             options.table="tc_pgm";
                             options.key="pgm_id";
+                            options.model=$scope.domain;
                             return options;
                         }
 					},
@@ -155,8 +156,8 @@ angular
 							 id: "pgm_id",
 							 fields: {
                                  pgm_id: { editable: false,nullable: true},
-                                 menu_name_mn: { type: "string", validation: { required: true } },
-                                 state_url: { type: "string", defaultValue:'#'},
+                                 pgm_nm: { type: "string", validation: { required: true } },
+                                 call_url: { type: "string", defaultValue:'#'},
                                  ui_icon: { type: "string"},
                                  parent_id: { type: "number"},
                                  update_type: { type: "number", defaultValue:1},
@@ -208,8 +209,8 @@ angular
 				},
 				columns: [
 				  	{title: "#",template: "<span class='row-number'></span>", width:60},
-				  	{ field:"menu_name_mn", title: "Нэр /Mn/", width: 200 },
-				  	{ field: "state_url", title:"URL", width: 200 },
+				  	{ field:"pgm_nm", title: "Нэр /Mn/", width: 200 },
+				  	{ field: "call_url", title:"URL", width: 200 },
 				 	{ field: "ui_icon", title:"IKON", width: 150},
 					{ field: "parent_id", values: aj, title:"Эцэг цэс", width: 200},
 				  	{ field: "order_id", title:"Дараалал", width: 200 },

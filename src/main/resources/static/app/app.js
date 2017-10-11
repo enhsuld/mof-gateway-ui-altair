@@ -68,6 +68,12 @@ altairApp
 
             $rootScope.$on('$stateChangeSuccess', function () {
 
+                $http.get("api/users/extra")
+                    .then(function(response) {
+                        console.log(response);
+                });
+
+                console.log($state.current.name);
                 // scroll view to top
                 $("html, body").animate({
                     scrollTop: 0

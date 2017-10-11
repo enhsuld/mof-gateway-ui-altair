@@ -225,20 +225,20 @@ right: 0px !important;
 	height: inherit !important;
 }
 #sidebar_main {
-    width: 270px ;    
+    width: 270px ;
     -webkit-transform: translate3d(-270px, 0, 0) ;
-    transform: translate3d(-270px, 0, 0) ;   
+    transform: translate3d(-270px, 0, 0) ;
 }
 @media only screen and (min-width: 1220px) {
     .sidebar_main_active #header_main, .sidebar_main_active #page_content, .sidebar_main_active #top_bar {
         margin-left: 270px !important;
     }
 }
-@media only screen and (min-width: 1220px) {  
+@media only screen and (min-width: 1220px) {
 
     .sidebar_main_open #header_main, .sidebar_main_open #page_content, .sidebar_main_open #top_bar {
         margin-left: 270px !important;
-    }    
+    }
 }
 .sidebar_slim_active #sidebar_main .menu_section > ul > li {
     width: 270px !important;
