@@ -7,6 +7,8 @@ angular
                 $scope.domain="com.macro.dev.models.TcPgm";
 	        	$scope.selectize_uptype_options=forumType;
     			var $formValidate = $('#form_val');
+
+    			console.log($rootScope.rdelete);
                 var aj=p_menu;
                 var init={"text":"ROOT","value":"null"};
                 aj.push(init);

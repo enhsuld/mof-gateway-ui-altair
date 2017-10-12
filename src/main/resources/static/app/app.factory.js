@@ -15,7 +15,6 @@ altairApp
     .factory('rememberMeInterceptor', ['$q','$injector','$location','$httpParamSerializer', function($q, $injector,$location,$httpParamSerializer) {
         var interceptor = {
             responseError: function(response) {
-                console.log(response.status);
 
                 if (response.status == 401){
 
@@ -37,10 +36,13 @@ altairApp
                             var expireDate = new Date (new Date().getTime() + (1000 * data.data.expires_in));
                             $cookies.put("access_token", data.data.access_token, {'expires': expireDate});
                             $cookies.put("validity", data.data.expires_in);
-                            $location.path('/')
+                            $rootScope.userData=data.data;
+                            $location.path('/');
+                           // window.location.href="/";
                         },function(){
                             console.log("error");
                             $cookies.remove("access_token");
+                            $cookies.remove("validity");
                             $location.path('/login');
                         }
                     );

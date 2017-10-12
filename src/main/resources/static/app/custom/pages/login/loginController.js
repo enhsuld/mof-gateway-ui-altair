@@ -103,16 +103,8 @@ angular
                 utils.card_show_hide($login_card,undefined,password_reset_show,undefined);
             };
 
-            $scope.foo = {id:1 , name:"sample foo"};
-          //  $scope.foos = $resource("http://localhost:8082/spring-security-oauth-resource/foos/:fooId",{fooId:'@id'});
-
             $scope.organiztion = "";
             $scope.isLoggedIn = false;
-
-            $scope.getFoo = function(){
-                $scope.foo = $scope.foos.get({fooId:$scope.foo.id});
-            }
-
             $scope.loginData = {grant_type:"password", username: "", password: "", client_id: "fooClientIdPassword"};
             $scope.refreshData = {grant_type:"refresh_token"};
 
@@ -121,6 +113,10 @@ angular
             if(isLoginPage){
                 if($cookies.get("access_token")){
                     $state.go('restricted.dashboard');
+                }
+                else{
+                    $cookies.remove("remember");
+                    $cookies.remove("validity");
                 }
             }else{
                 if($cookies.get("access_token")){
@@ -145,15 +141,15 @@ angular
                 logout($scope.loginData);
             }
 
-            if ($cookies.get("remember")=="yes"){
+            if ($cookies.get("remember")==="yes"){
                 var validity = $cookies.get("validity");
                 if (validity >10) validity -= 10;
                 $timeout( function(){;$scope.refreshAccessToken();}, validity * 1000);
             }
 
             function obtainAccessToken(params){
-                if (params.username != null){
-                    if (params.remember != null){
+                if (params.username !== null){
+                    if (params.remember !== null){
                         $cookies.put("remember","yes");
                     }
                     else {
@@ -178,7 +174,7 @@ angular
                         var expireDate = new Date (new Date().getTime() + (1000 * data.data.expires_in));
                         $cookies.put("access_token", data.data.access_token, {'expires': expireDate});
                         $cookies.put("validity", data.data.expires_in);
-
+                        $rootScope.userData=data.data;
                         $state.go('restricted.dashboard');
                     },function(){
                         console.log("error");
@@ -211,6 +207,7 @@ angular
                     function(data){
                         $cookies.remove("access_token");
                         $cookies.remove("remember");
+                        $cookies.remove("validity");
                         window.location.href="login";
                     },function(){
                         console.log("error");

@@ -68,12 +68,22 @@ altairApp
 
             $rootScope.$on('$stateChangeSuccess', function () {
 
-                $http.get("api/users/extra")
-                    .then(function(response) {
-                        console.log(response);
-                });
-
                 console.log($state.current.name);
+                var st=$state.current.name;
+                if(st!=='login'){
+                    $http.get("api/core/rjson/0/"+$state.current.name+".")
+                        .then(function(item) {
+                            console.log(item);
+                            $rootScope.rupdate=item.data.rupdate;
+                            $rootScope.rcreate=item.data.rcreate;
+                            $rootScope.rdelete=item.data.rdelete;
+                            $rootScope.rexport=item.data.rexport;
+                            $rootScope.ruptype=item.data.ruptype;
+
+                            console.log(item);
+                        });
+                }
+
                 // scroll view to top
                 $("html, body").animate({
                     scrollTop: 0
