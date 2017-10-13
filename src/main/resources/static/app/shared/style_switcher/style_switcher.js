@@ -179,9 +179,13 @@ angular
                 // main menu accordion mode
                 var $accordion_mode_toggle = $('#accordion_mode_main_menu');
 
+                $accordion_mode_toggle.iCheck('check');
+
                 if($rootScope.menuAccordionMode) {
                     $accordion_mode_toggle.iCheck('check');
                 }
+
+                $rootScope.menuAccordionMode = true;
 
                 $accordion_mode_toggle
                     .on('ifChecked', function(){
@@ -196,7 +200,7 @@ angular
                 if(localStorage.getItem("altair_theme") !== null) {
                     $rootScope.main_theme = localStorage.getItem("altair_theme");
                 } else {
-                    $rootScope.main_theme = "default_theme"
+                    $rootScope.main_theme = "app_theme_a"
                 }
 
             }

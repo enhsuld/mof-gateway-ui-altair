@@ -24,7 +24,7 @@
 				<div class="uk-grid" data-uk-grid-margin>
 					<div class="uk-width-medium-1-1" >
 						<label>Байгууллага</label>
-						<input type="text" ng-model="ud.organizationid" config="selectize_a_config" options="selectize_a_data" name="selectize_a" selectize />
+						<input type="text" ng-model="ud.org_cd" config="selectize_a_config" options="selectize_a_data" name="selectize_a" selectize />
 					</div>
 				</div>
 				<div class="uk-grid" data-uk-grid-margin>
@@ -56,20 +56,20 @@
 				<div class="uk-grid" data-uk-grid-margin>
 					<div class="uk-width-medium-1-2" >
 						<label>Хэрэглэгчийн нэр</label>
-						<input type="text" ng-model="ud.username" class="md-input" md-input />
+						<input type="text" ng-model="ud.user_nm" class="md-input" md-input />
 					</div>
 					<div class="uk-width-medium-1-2" >
 						<label>Нууц үг</label>
-						<input type="password" ng-model="ud.password" type="text" class="md-input" md-input />
+						<input type="password" ng-model="ud.user_pw" type="text" class="md-input" md-input />
 					</div>
 				</div>
 				<div class="uk-modal-footer">
 					<div class="uk-grid" data-uk-grid-margin>
-						<div class="uk-width-medium-1-2">
+						<!--<div class="uk-width-medium-1-2">
 							<label style="margin-right: 10px;">Идвэхтэй эсэх</label>
 							<input  type="checkbox" ng-model="ud.isactive" name="checkbox_demo_1" id="checkbox_demo_1" icheck ng-model="checkbox_demo_1" />
-						</div>
-						<div class="uk-width-medium-1-2" >
+						</div>-->
+						<div class="uk-width-medium-1-1 uk-text-right">
 							<button ng-click="addUser()" type="submit" class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light">Хадгалах</button>
 							<button type="button" class="md-btn md-btn-flat uk-modal-close">Хаах</button>
 						</div>
@@ -80,16 +80,16 @@
 	</div>
 	<script type="text/x-kendo-template" id="add">
          <div style="width: 250px; float: left;" id="details-container" style="text-align:left;">
-           <button class="k-button k-button-icontext" ng-click='res()'  data-uk-modal="{target:'\\#modal_update_user'}"> <span class='k-icon k-add'></span>Шинээр хэрэглэгч нэмэх</button>
+           <button class="k-button k-button-icontext" ng-click='res()'  data-uk-modal="{target:'\\#modal_update_user'}"> <span class='k-icon k-i-add'></span>Шинээр хэрэглэгч нэмэх</button>
          </div>
      </script>
      <script type="text/x-kendo-template" id="update">
-        <button class="k-button k-button-icontext" ng-click='update(dataItem)'  data-uk-modal="{target:'\\#modal_update_user'}"><span class="k-icon k-edit"></span>Засах</button>
+        <button class="k-button k-button-icontext" ng-click='update(dataItem)'  data-uk-modal="{target:'\\#modal_update_user'}"><span class="k-icon k-i-edit"></span>Засах</button>
     	<button class="k-button k-button-icontext  k-grid-delete" ><span class="k-icon k-delete"></span>Устгах</button>
 	</script>
 	<script type="text/x-kendo-template" id="updateu">
-        <button class="k-button k-button-icontext" ng-click='update(dataItem)'  data-uk-modal="{target:'\\#modal_update_user'}"><span class="k-icon k-edit"></span>Засах</button>
+        <button class="k-button k-button-icontext" ng-click='update(dataItem)'  data-uk-modal="{target:'\\#modal_update_user'}"><span class="k-icon k-i-edit"></span>Засах</button>
     	</script>
 	<script type="text/x-kendo-template" id="updated">
-        <button class="k-button k-button-icontext  k-grid-delete" ><span class="k-icon k-delete"></span>Устгах</button>
+        <button class="k-button k-button-icontext  k-grid-delete" ><span class="k-icon k-i-delete"></span>Устгах</button>
 	</script>

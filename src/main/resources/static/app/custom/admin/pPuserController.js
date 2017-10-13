@@ -1,28 +1,24 @@
 angular
     .module('altairApp')
-    	.controller("userCtrl",['$cookies','$scope','p_role','p_org','mainService','$state','sweet',
-	        function ($cookies,$scope,p_role,p_org,mainService,$state,sweet) {
+    	.controller("userCtrl",['$cookies','$scope','p_role','p_org','action','mainService','$state','sweet',
+	        function ($cookies,$scope,p_role,p_org,action,mainService,$state,sweet) {
 
-    			$scope.domain="com.macro.dev.models.LutUser.";
-    			
-    			
+    			$scope.domain="com.macro.dev.models.TcUser.";
+
+                var yesno=[{"text":"tiim","value":1},{"text":"ugui","value":0}];
     			$scope.selectize_a_data=p_org;
     			$scope.selectize_b_data= [];
 			    var planets_data = $scope.selectize_role = p_role;
-    			
-    			$scope.ud = {
-	                "id":0,
-	            };
-    			
-    			$scope.res=function(){
-    				$scope.ud = {
-    					id:0
-					};
-    			}
+
+			    console.log(p_role);
+
+                $scope.ud={
+                    user_id:0
+				};
     				
 				$scope.addUser = function() {
 					 var mdl = UIkit.modal("#modal_update_user");
-  	    		     mainService.withdata('PUT','/api/core/user/add/'+$scope.ud.id, $scope.ud)
+  	    		     mainService.withdata('PUT','/api/core/user/add/'+$scope.ud.user_id, $scope.ud)
 	  		   			.then(function(data){
 	  		   				mdl.hide();
 	  		   				
@@ -35,7 +31,7 @@ angular
 	  		   				}		   				
 	  		   			});	 
                          
-               }
+               };
 				
     			$scope.selectize_a_config = {
     	                plugins: {
@@ -61,54 +57,44 @@ angular
 	                    }
 	                },
 	                maxItems: null,
-	                valueField: 'id',
-	                labelField: 'title',
-	                searchField: 'title',
+	                valueField: 'value',
+	                labelField: 'text',
+	                searchField: 'text',
 	                create: false,
 	                render: {
 	                    option: function(planets_data, escape) {
 	                        return  '<div class="option">' +
-	                            '<span class="title">' + escape(planets_data.title) + '</span>' +
+	                            '<span class="title">' + escape(planets_data.text) + '</span>' +
 	                            '</div>';
 	                    },
 	                    item: function(planets_data, escape) {
-	                        return '<div class="item"><a href="' + escape(planets_data.url) + '" target="_blank">' + escape(planets_data.title) + '</a></div>';
+	                        return '<div class="item"><a href="' + escape(planets_data.url) + '" target="_blank">' + escape(planets_data.text) + '</a></div>';
 	                    }
 	                }
 	            };
                 
 			$scope.update=function(vdata){
-
-				var cars = vdata.lutRoles;
-				if (cars==null || cars==""){}
-				else{
-					var array = [];
-                    angular.forEach(cars, function(value, key) {
-                    	array.push(value.id);
-                    });
-				}
-
-				$scope.ud = {
-					"id": vdata.id,
-					"organizationid": vdata.organizationid,
-					"positionid": vdata.positionid,
-					"familyname": vdata.familyname,
-					"givenname": vdata.givenname,
-					"mobile": vdata.mobile,
-					"email": vdata.email,
-					"username": vdata.username,
-					"password": vdata.password,
-					"isactive": vdata.isactive,
-					roles: array,
-				};
-			}
+                mainService.withdomain('get','/api/core/user/roles/'+vdata.id)
+                    .then(function(data){
+                        $scope.ud = {
+						"user_id": vdata.user_id,
+						"org_cd": vdata.org_cd,
+						"cell_no": vdata.cell_no,
+						"user_pw": vdata.user_pw,
+						"use_yn": vdata.use_yn,
+						"user_nm": vdata.user_nm,
+						roles: data
+					};
+				});
+			};
 
        	    $scope.puserGrid = {
 				dataSource: {
 					transport: {
 						read:  {
-							url: "/api/core/list/LutUser?access_token="+$cookies.get('access_token'),
+							url: "/api/core/list/tc_user?access_token="+$cookies.get('access_token'),
                             type: 'GET',
+                            data: {"sort":[{field: 'user_id', dir: 'asc'}]},
                             dataType: "json"
 						},
 						update: {
@@ -130,33 +116,31 @@ angular
 							contentType:"application/json; charset=UTF-8",
 							type:"POST",
 							complete: function(e) {
-								$("#notificationSuccess").trigger('click');
+                                UIkit.notify("Амжилттай хадгаллаа.", {status:'success'});
 								$(".k-grid").data("kendoGrid").dataSource.read();
 							}
 						},
                         parameterMap: function(options) {
-                            options.data=JSON.stringify( options)
+                            options.data=JSON.stringify( options);
+                            options.table="tc_user";
+                            options.key="user_id";
+                            options.model=$scope.domain;
                             return options;
                         }
 					},
 					schema: {
 						data:"data",
-
 						total:"total",
 						 model: {
-							 id: "id",
+							 id: "user_id",
 							 fields: {
-								id: { type: "number", editable: false,nullable: false},
-								departmentid: { type: "number",  validation: { required: true } },
-								email: { type: "string"},
-								positionid: { type: "number"},
-								roleid: { type: "string"},
-								givenname: { type: "string"},
-								familyname: { type: "string"},
-								mobile: { type: "string"},
-								username: { type: "string", validation: { required: true} },
-								password: { type: "string", validation: { required: true} },
-								isactive: { type: "boolean" }
+                                 user_id: { type: "number", editable: false,nullable: false},
+                                 email: { type: "string",  validation: { required: true } },
+                                 org_cd: { type: "number",validation: { required: true}},
+                                 cell_no: { type: "number"},
+                                 user_pw: { type: "string",validation: { required: true}},
+                                 use_yn: { type: "string",default:"1"},
+                                 user_nm: { type: "string",validation: { required: true}}
 							 }
 						 }
 
@@ -185,17 +169,15 @@ angular
 					buttonCount: 5
 				},
 				columns: [
-					 { title: "#",template: "<span class='row-number'></span>", locked: true, width:"70px"},
-                     { field:"organizationid", title: "Байгууллага",values:p_org,width: 150},
-					 { field:"familyname", title: "Овог",width: 150},
-					 { field:"givenname", title: "Нэр",width: 150 },
-					 { field:"mobile", title: "Утас",width: 150},
-					 { field:"email", title: "E-mail",width: 150},
-					 { field:"roleid", title: "Эрх" ,width: 150},
-					 { field:"username", title: "Нэвтрэх нэр" ,width: 150},
-					 { field:"password",hidden:true, title: "Нууц үг" ,width: 150},
-					 { field:"isactive", title: "Идэвхитэй эсэх" ,width: 150},
-					 { template: kendo.template($("#update").html()),  width: "240px"}
+					 { title: "#",template: "<span class='row-number'></span>",  width:70},
+                     { field:"org_cd", title: "Байгууллага",values:p_org},
+					 { field:"email", title: "E-mail"},
+					 { field:"cell_no", title: "Утас"},
+                     { field:"user_nm", title: "Нэвтрэх нэр",width: 150},
+					 { field:"user_pw", title: "Нууц үг",width: 150},
+					// { field:"roleid", title: "Эрх" ,width: 150},
+					 { field:"use_yn", values:yesno,title: "Идэвхитэй эсэх" ,width: 150},
+					 { template: kendo.template($("#update").html()),  width: 250}
 				],
 				dataBound: function () {
 					 var rows = this.items();

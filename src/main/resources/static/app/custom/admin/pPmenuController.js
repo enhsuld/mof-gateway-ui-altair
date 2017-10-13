@@ -1,14 +1,14 @@
 angular
     .module('altairApp')
-    	.controller("menuCtrl",['$rootScope','$scope','p_menu','mainService','$state','sweet','$cookies',
-	        function ($rootScope,$scope,p_menu,mainService,$state,sweet,$cookies) {
-	    	//	var aj=[{"text":"ROOT","value":"null"}];
+    	.controller("menuCtrl",['$rootScope','$scope','p_menu','action','mainService','$state','sweet','$cookies',
+	        function ($rootScope,$scope,p_menu,action,mainService,$state,sweet,$cookies) {
+
+	    		$scope.role=action;
                 var forumType=[{"text":"inline","value":1},{"text":"pop-up","value":2},{"text":"batch","value":3},{"text":"custom","value":4}];
-                $scope.domain="com.macro.dev.models.TcPgm";
+                $scope.domain="com.macro.dev.models.TcPgm.";
 	        	$scope.selectize_uptype_options=forumType;
     			var $formValidate = $('#form_val');
 
-    			console.log($rootScope.rdelete);
                 var aj=p_menu;
                 var init={"text":"ROOT","value":"null"};
                 aj.push(init);
@@ -30,24 +30,24 @@ angular
 	    	    	//  $scope.formdata.parentid=0;
 	    	    	  modalUpdate.show();
 	    	      }
-	    	      
+
 	    	      $scope.edit = function(id){
 	    	    	  mainService.withdomain('get', '/api/core/api/LutMenu/'+id).
 		    			then(function(data){
 		    				$scope.formdata=data[0];
 		    				modalUpdate.show();
-		    			});  
+		    			});
 	    	      }
-	    	      
+
 	    	      $scope.submitForm = function($event){
-	    	    	  
+
 	    	    	  if($scope.formdata.id==null){
 	    	    		  mainService.withdata('POST', '/api/core/create/'+$scope.domain,  $scope.formdata).
 	  	    				then(function(data){
 		  	    				modalUpdate.hide();
 		  	    				$event.preventDefault();
 		  		   				sweet.show('Мэдээлэл', 'Үйлдэл амжилттай.', 'success');
-		              			$(".k-grid").data("kendoGrid").dataSource.read(); 
+		              			$(".k-grid").data("kendoGrid").dataSource.read();
 	  	    				});
 	    	    	  }else{
 	    	    		  mainService.withdata('POST', '/api/core/update/'+$scope.domain,  $scope.formdata).
@@ -55,13 +55,13 @@ angular
 		  	    				modalUpdate.hide();
 		  	    				$event.preventDefault();
 		  		   				sweet.show('Мэдээлэл', 'Үйлдэл амжилттай.', 'success');
-		              			$(".k-grid").data("kendoGrid").dataSource.read(); 
+		              			$(".k-grid").data("kendoGrid").dataSource.read();
 		    				});
 	    	    	  }
-	    	    	  
+
 	    	      }
 	    	      $scope.deleteO = function(id){
-	     	    	 
+
 	    				sweet.show({
 	  			        	   title: 'Баталгаажуулалт',
 	  	   		            text: 'Та устгахдаа итгэлтэй байна уу?',
@@ -72,7 +72,7 @@ angular
 	  			    	    cancelButtonText: 'Үгүй',
 	  	   		            closeOnConfirm: false,
 	  	   		            closeOnCancel: false
-	  			          
+
 	  			        }, function(inputvalue) {
 	  			        	 if (inputvalue) {
 	  			        		 $scope.formdata = {};
@@ -85,12 +85,12 @@ angular
                                      });
 	  	 		            }else{
 	  	 		                sweet.show('Анхаар!', 'Устгах үйлдэл хийгдсэнгүй!!!', 'error');
-	  	 		            }    		
+	  	 		            }
 	  			        });
 				  }
-	    	      
+
 	    	         var isfile_data = $scope.selectize_isfile_options = aj;
-	     			
+
 	     			 $scope.selectize_isfile_config = {
 	     	                plugins: {
 	     	                    'remove_button': {
@@ -230,65 +230,66 @@ angular
 
 			};
 
-			if($rootScope.ruptype==1){
+
+			if($scope.role.ruptype===1){
 				$scope.pmenuGrid.editable="inline";
-                if($rootScope.rcreate==1){
+                if($scope.role.rcreate===1){
                     $scope.pmenuGrid.toolbar= ["create"];
 				}
-                if($rootScope.rupdate==1 && $rootScope.rdelete==1){
+                if($scope.role.rupdate===1 && $scope.role.rdelete===1){
                     $scope.pmenuGrid.columns.push({ command: ["edit", "destroy"], title: "&nbsp;", width: "250px" });
                 }
-				else if($rootScope.rupdate==1 && $rootScope.rdelete==0){
+				else if($scope.role.rupdate===1 && $scope.role.rdelete===0){
                     $scope.pmenuGrid.columns.push({ command: ["edit"], title: "&nbsp;", width: "140px" });
 				}
-				else if($rootScope.rupdate==0 && $rootScope.rdelete==1){
+				else if($scope.role.rupdate===0 && $scope.role.rdelete===1){
                     $scope.pmenuGrid.columns.push({ command: ["destroy"], title: "&nbsp;", width: "140px" });
                 }
-                if($rootScope.rexport==1){
+                if($scope.role.rexport===1){
                     $scope.pmenuGrid.toolbar.push("excel");
                     $scope.pmenuGrid.toolbar.push("pdf");
                 }
 
 			}
-			if($rootScope.ruptype==2){
+			if($scope.role.ruptype===2){
 				$scope.pmenuGrid.editable="popup";
-                if($rootScope.rcreate==1){
+                if($scope.role.rcreate===1){
                     $scope.pmenuGrid.toolbar= ["create"];
                 }
-                if($rootScope.rupdate==1 && $rootScope.rdelete==1){
+                if($scope.role.rupdate===1 && $scope.role.rdelete===1){
                     $scope.pmenuGrid.columns.push({ command: ["edit", "destroy"], title: "&nbsp;", width: "250px" });
                 }
-                else if($rootScope.rupdate==1 && $rootScope.rdelete==0){
+                else if($scope.role.rupdate===1 && $scope.role.rdelete===0){
                     $scope.pmenuGrid.columns.push({ command: ["edit"], title: "&nbsp;", width: "140px" });
                 }
-                else if($rootScope.rupdate==0 && $rootScope.rdelete==1){
+                else if($scope.role.rupdate===0 && $scope.role.rdelete===1){
                     $scope.pmenuGrid.columns.push({ command: ["destroy"], title: "&nbsp;", width: "140px" });
                 }
-                if($rootScope.rexport==1){
+                if($scope.role.rexport===1){
                     $scope.pmenuGrid.toolbar.push("excel");
                     $scope.pmenuGrid.toolbar.push("pdf");
                 }
 			}
-			if($rootScope.ruptype==3){
+			if($scope.role.ruptype===3){
                 $scope.pmenuGrid.editable=true;
 
-                if($rootScope.rcreate==1){
-                    if($rootScope.rupdate==1){
+                if($scope.role.rcreate===1){
+                    if($scope.role.rupdate===1){
                         $scope.pmenuGrid.toolbar= ["create", "save", "cancel"];
 					}
 					else{
                         $scope.pmenuGrid.toolbar= ["create"];
 					}
                 }
-                if($rootScope.rdelete==1){
+                if($scope.role.rdelete===1){
                     $scope.pmenuGrid.columns.push({ command: ["destroy"], title: "&nbsp;", width: "140px" });
                 }
-                if($rootScope.rexport==1){
+                if($scope.role.rexport===1){
                     $scope.pmenuGrid.toolbar.push("excel");
                     $scope.pmenuGrid.toolbar.push("pdf");
                 }
 			}
-			if($rootScope.ruptype==4){
+			if($scope.role.ruptype===4){
 				$scope.pmenuGrid.toolbar= kendo.template($("#add").html());
 				$scope.pmenuGrid.editable="popup";
 				$scope.pmenuGrid.columns.push({template: kendo.template($("#update").html()), width: "200px"});
