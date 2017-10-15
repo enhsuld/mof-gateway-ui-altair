@@ -36,7 +36,7 @@ altairApp
                             var expireDate = new Date (new Date().getTime() + (1000 * data.data.expires_in));
                             $cookies.put("access_token", data.data.access_token, {'expires': expireDate});
                             $cookies.put("validity", data.data.expires_in);
-                            $rootScope.userData=data.data;
+                           // $rootScope.userData=data.data;
                             $location.path('/');
                            // window.location.href="/";
                         },function(){

@@ -9,6 +9,41 @@ altairApp
 
     	   $stateProvider
 
+               .state("restricted.system", {
+                   url: "/system",
+                   template: '<div ui-view autoscroll="false" ng-class="{ \'uk-height-1-1\': page_full_height }"/>',
+                   abstract: true,
+                   ncyBreadcrumb: {
+                       label: 'Системийн удирдлага'
+                   }
+               })
+
+               .state("restricted.system.faq", {
+                   url: "/faq",
+                   templateUrl: 'app/custom/system/faqView.html',
+                   controller: 'faqCtrl',
+                   resolve: {
+                       deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                           return $ocLazyLoad.load(['lazy_KendoUI',
+                               'lazy_parsleyjs',
+                               'app/custom/system/faqController.js'
+                           ]);
+                       }],
+                       action: function($http,$state){
+                           return $http({ method: 'GET', url: '/api/core/rjson/0/restricted.system.faq."'})
+                               .then(function (data) {
+                                   return data.data;
+                               })
+                               .catch(function(response) {
+                                   $state.go("login");
+                               });
+                       }
+                   },
+                   data: {
+                       pageTitle: 'FAQ удирдлага'
+                   }
+               })
+
                .state("restricted.pages.cmmorganization", {
                    url: "/organization",
                    templateUrl: 'app/custom/admin/pCmmOrganizationView.html',

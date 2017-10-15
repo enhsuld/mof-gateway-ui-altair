@@ -15,18 +15,18 @@ angular
 
 	        
 	          	
-	        	$scope.domain="com.macro.dev.models.LutRole.";
+	        	$scope.domain="com.macro.dev.models.TcRole.";
 	        	
         		$scope.proleGrid = {
     	                dataSource: {
     	                   
     	                    transport: {
-    	                    	read:  {
-    	                            url: "/api/core/list/LutRole?access_token="+$cookies.get('access_token'),
-    	                            contentType:"application/json; charset=UTF-8",
+                                read:  {
+                                    url: "/api/core/list/tc_role?access_token="+$cookies.get('access_token'),
+                                    data: {"sort":[{field: 'role_id', dir: 'desc'}]},
                                     type: 'GET',
                                     dataType: "json"
-    	                        },
+                                },
     	                        update: {
     	                            url: "/api/core/update/"+$scope.domain+"?access_token="+$cookies.get('access_token'),
                                     dataType: "json",
@@ -46,8 +46,10 @@ angular
     	                    		}
     	                        },
                                 parameterMap: function(options) {
-                                    console.log(options);
-                                    options.data=JSON.stringify( options)
+                                    options.data=JSON.stringify( options);
+                                    options.table="tc_role";
+                                    options.key="role_id";
+                                    options.model=$scope.domain;
                                     return options;
                                 }
     	                    },
@@ -55,11 +57,12 @@ angular
     	                     	data:"data",
     	                     	total:"total",
     	                     	 model: {                                	
-    	                             id: "id",
-    	                             fields: {   
-    	                            	 id: { editable: false,nullable: true, defaultValue:0},
-    	                              	roleNameMon: { type: "roleNameMon", validation: { required: true } },
-    	                              	roleNameEng: { type: "roleNameEng", validation: { required: true }}                           
+    	                             id: "role_id",
+    	                             fields: {
+                                         role_id: { editable: false,nullable: true, defaultValue:0},
+                                         role_nm: { type: "string", validation: { required: true } },
+                                         role_nm_eng: { type: "string", validation: { required: true }},
+                                         access_id: { type: "number", nullable: true}
     	                              }
     	                         }
     	                     },
@@ -79,9 +82,9 @@ angular
     	                },
     	                columns: [
     	                	  {title: "#",template: "<span class='row-number'></span>", width:"60px"},
-	                          { field:"rolename", title: "Эрх (mn)" },
-	                          { field:"roleauth", title: "Эрх (en)" },	  
-	                          { field:"accessid", title: "Нэвтрэх хуудас", values: p_menu},	            
+	                          { field:"role_nm", title: "Эрх (mn)" },
+	                          { field:"role_nm_eng", title: "Эрх (en)" },
+	                          { field:"access_id", title: "Нэвтрэх хуудас", values: p_menu},
 	                          { 
                           	  template: kendo.template($("#update").html()),  width: "240px" 
                                 
@@ -94,8 +97,7 @@ angular
   	   		                      var rowLabel = $(this).find(".row-number");
   	   		                      $(rowLabel).html(index);
   	   		                  });
-  	   		  	           },
-	                      editable: "popup"
+  	   		  	           }
 	            };
 
 
@@ -115,10 +117,6 @@ angular
                             $scope.$apply();
                         }
                     });
-
-
-
-
 
 
                 var $ts_pager_filter = $("#ts_pager_filter"),
@@ -334,34 +332,36 @@ angular
 	            	$scope.res();
 	    			$scope.roleid=vdata.id;    	
 	    		    $scope.role = {
-	    		                "roleauth": vdata.roleauth,
-	    		                "rolename": vdata.rolename,	    		           
-	    		                "accessid": vdata.accessid
+	    		                "roleauth": vdata.role_nm_eng,
+	    		                "rolename": vdata.role_nm,
+	    		                "accessid": vdata.access_id
 	    		            };
-	    		    
-	    			mainService.getDetail('/api/core/action/read/'+$scope.domain+'/'+vdata.id)
-	    			.then(function(data){	    			
+
+
+	    			mainService.withdomain('get','/api/core/read/tc_role_pgm/role_id/'+vdata.role_id)
+	    			.then(function(data){
+	    				console.log(data);
 	    				$scope.data = data;
 	    		        angular.forEach($scope.data, function(value, key){
-	    		         if(value.create==1){
+	    		         if(value.create===1){
 	    		        	 $scope.row_create.ids[value.menuid]=true;
 	    		         }
-	    		         if(value.read==1){
+	    		         if(value.read===1){
 	    		        	 $scope.row_read.ids[value.menuid]=true;
 	    		         }
-	    		         if(value.update==1){
+	    		         if(value.update===1){
 	    		        	 $scope.row_update.ids[value.menuid]=true;
 	    		         }
-	    		         if(value.delete==1){
+	    		         if(value.delete===1){
 	    		        	 $scope.row_delete.ids[value.menuid]=true;
 	    		         }
-	    		         if(value.export==1){
+	    		         if(value.export===1){
 	    		        	 $scope.row_export.ids[value.menuid]=true;
 	    		         } 
 	    		        });    				
 	    			});	   		
 	    			    	    	
-	    		}
+	    		};
 	            
 	            $scope.delMe=function(i){
 		   	    	 mainService.withdomain('get','/api/core/action/delete/'+$scope.domain+'/'+i)

@@ -13,9 +13,7 @@
         </div>
     </div>
 
-<footer id="footer">
-	    <span style="display:block;  text-align:right;">&copy; 2016-2017 <a href="www.tyder.kinder.mn">Tyder LLC</a>, All rights reserved.</span>
-	</footer>>
+	<div ng-include="'/app/views/footer.html'"></div>
 
      <div class="uk-modal" id="modal_update">
           <div class="uk-modal-dialog uk-modal-dialog-large" data-uk-grid-margin>
@@ -78,7 +76,8 @@
 	                                	<input type="hidden" id="{{item.id}}" class="menu" ng-model="row_create.menuid" value="{{item.id}}"/>                              	
                                 	</td>	                              
 	                                <td>
-										<span ng-if="item.parent_id!=null" style="padding-left:20px; color:#29b6f6;">{{item.title}}</span>
+										<span ng-if="item.parent_id!=null && item.level==3" style="padding-left:40px;" class="uk-text-danger">{{item.title}}</span>
+										<span ng-if="item.parent_id!=null && item.level==2" style="padding-left:20px; color:#29b6f6;">{{item.title}}</span>
 										<span ng-if="item.parent_id==null" class=".md-color-purple-400" style="padding-left:0px;">{{item.title}}</span>
 									</td>
 	                                <td>	                                
